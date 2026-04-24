@@ -1,0 +1,27 @@
+*.pyc
+__pycache__/
+*.sqlite3
+.env
+*.log
+staticfiles/
+mediafiles/
+logs/
+venv/
+.venv/
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Excluded from public repo
+data/
+docs/
+.claude/
+CLAUDE.md
+config/google_credentials.json
+
+# Tooling caches / coverage
+.coverage
+.pytest_cache/
+.ruff_cache/
+.import_linter_cache/

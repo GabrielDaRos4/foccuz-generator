@@ -1,0 +1,526 @@
+metadata:
+  client_id: GRUPO_K
+  client_name: Grupo K
+  active: true
+  gsheet_output: 1wjSl0Tnrot-LDx87nKvR3MBPy_ASMaDXTSFv4jTwvfg
+
+plans:
+  PLAN_859:
+    active: true
+    name: Asesor Venta
+    description: Comisiones para Asesor de Venta
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://mk.buk.cl/api/v1/chile/employees
+          auth_token: 4rpH4uPQtL2qLQKUHjqmjPF9
+          paginated: true
+          page_size: 100
+
+      - id: sales
+        type: api
+        config:
+          base_url: http://webapi.mk.cl
+          path: /mk/GetFileBaseComisionProyecto
+          headers:
+            XApiKey: pgH7QzFHJx4w46fI~5Uzi4RvtTwlEXp
+          response_format: csv
+          separator: ";"
+          encoding: utf-8
+          timeout: 60
+
+      - id: commission_tiers
+        type: json
+        config:
+          path: data/grupok/asesor_venta.json
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: grupok_sales_advisor_merge
+        employees_key: employees
+        sales_key: sales
+        tiers_key: commission_tiers
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.grupok.sales_advisor_strategy
+      class: GrupoKSalesAdvisorStrategy
+      params:
+        rep_id_filter: null
+        role_filter: Asesor de venta
+
+    output:
+      tab_name: PLAN_859
+      clear_before_write: true
+
+  PLAN_860:
+    active: true
+    name: Jefe de Tienda
+    description: Comisiones para Jefe de Tienda
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://mk.buk.cl/api/v1/chile/employees
+          auth_token: 4rpH4uPQtL2qLQKUHjqmjPF9
+          paginated: true
+          page_size: 100
+
+      - id: sales
+        type: api
+        config:
+          base_url: http://webapi.mk.cl
+          path: /mk/GetFileBaseComisionProyecto
+          headers:
+            XApiKey: pgH7QzFHJx4w46fI~5Uzi4RvtTwlEXp
+          response_format: csv
+          separator: ";"
+          encoding: utf-8
+          timeout: 60
+
+      - id: commission_tiers
+        type: json
+        config:
+          path: data/grupok/jefe_region.json
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: grupok_store_manager_merge
+        employees_key: employees
+        sales_key: sales
+        tiers_key: commission_tiers
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.grupok.store_manager_strategy
+      class: GrupoKStoreManagerStrategy
+      params:
+        rep_id_filter: null
+        role_filter: Jefe de Tienda
+
+    output:
+      tab_name: PLAN_860
+      clear_before_write: true
+
+  PLAN_861:
+    active: true
+    name: PM Revestimientos Duros
+    description: Comisiones para Product Manager Revestimientos Duros
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://mk.buk.cl/api/v1/chile/employees
+          auth_token: 4rpH4uPQtL2qLQKUHjqmjPF9
+          paginated: true
+          page_size: 100
+
+      - id: sales
+        type: api
+        config:
+          base_url: http://webapi.mk.cl
+          path: /mk/GetFileBaseComisionProyecto
+          headers:
+            XApiKey: pgH7QzFHJx4w46fI~5Uzi4RvtTwlEXp
+          response_format: csv
+          separator: ";"
+          encoding: utf-8
+          timeout: 60
+
+      - id: commission_tiers
+        type: json
+        config:
+          path: data/grupok/pm_rd.json
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: grupok_product_manager_merge
+        employees_key: employees
+        sales_key: sales
+        tiers_key: commission_tiers
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.grupok.product_manager_strategy
+      class: GrupoKProductManagerStrategy
+      params:
+        rep_id_filter: null
+        role_code: gerente_de_producto_revestimientos_duros
+        sales_columns:
+          - linea_negocio_rd
+
+    output:
+      tab_name: PLAN_861
+      clear_before_write: true
+
+  PLAN_862:
+    active: true
+    name: PM Hidrosanitario
+    description: Comisiones para Product Manager Hidrosanitario
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://mk.buk.cl/api/v1/chile/employees
+          auth_token: 4rpH4uPQtL2qLQKUHjqmjPF9
+          paginated: true
+          page_size: 100
+
+      - id: sales
+        type: api
+        config:
+          base_url: http://webapi.mk.cl
+          path: /mk/GetFileBaseComisionProyecto
+          headers:
+            XApiKey: pgH7QzFHJx4w46fI~5Uzi4RvtTwlEXp
+          response_format: csv
+          separator: ";"
+          encoding: utf-8
+          timeout: 60
+
+      - id: commission_tiers
+        type: json
+        config:
+          path: data/grupok/pm_hidro.json
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: grupok_product_manager_merge
+        employees_key: employees
+        sales_key: sales
+        tiers_key: commission_tiers
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.grupok.product_manager_strategy
+      class: GrupoKProductManagerStrategy
+      params:
+        rep_id_filter: null
+        role_code: gerente_de_productos_hidrosanitario
+        sales_columns:
+          - linea_negocio_hi
+
+    output:
+      tab_name: PLAN_862
+      clear_before_write: true
+
+  PLAN_863:
+    active: true
+    name: PM Revestimientos Blandos y Muebles
+    description: Comisiones para Product Manager Rev Blandos, Cocinas y Muebles
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://mk.buk.cl/api/v1/chile/employees
+          auth_token: 4rpH4uPQtL2qLQKUHjqmjPF9
+          paginated: true
+          page_size: 100
+
+      - id: sales
+        type: api
+        config:
+          base_url: http://webapi.mk.cl
+          path: /mk/GetFileBaseComisionProyecto
+          headers:
+            XApiKey: pgH7QzFHJx4w46fI~5Uzi4RvtTwlEXp
+          response_format: csv
+          separator: ";"
+          encoding: utf-8
+          timeout: 60
+
+      - id: commission_tiers
+        type: json
+        config:
+          path: data/grupok/pm_revbmuebles.json
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: grupok_product_manager_merge
+        employees_key: employees
+        sales_key: sales
+        tiers_key: commission_tiers
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.grupok.product_manager_strategy
+      class: GrupoKProductManagerStrategy
+      params:
+        rep_id_filter: null
+        role_code: gerente_de_producto_rev_blandos_cocinas_y_muebles
+        sales_columns:
+          - linea_negocio_rb
+
+    output:
+      tab_name: PLAN_863
+      clear_before_write: true
+
+  PLAN_892:
+    active: true
+    name: PM Muebles y Cocinas
+    description: Comisiones para Product Manager Muebles y Cocinas
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://mk.buk.cl/api/v1/chile/employees
+          auth_token: 4rpH4uPQtL2qLQKUHjqmjPF9
+          paginated: true
+          page_size: 100
+
+      - id: sales
+        type: api
+        config:
+          base_url: http://webapi.mk.cl
+          path: /mk/GetFileBaseComisionProyecto
+          headers:
+            XApiKey: pgH7QzFHJx4w46fI~5Uzi4RvtTwlEXp
+          response_format: csv
+          separator: ";"
+          encoding: utf-8
+          timeout: 60
+
+      - id: commission_tiers
+        type: json
+        config:
+          path: data/grupok/pm_revbmuebles.json
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: grupok_product_manager_merge
+        employees_key: employees
+        sales_key: sales
+        tiers_key: commission_tiers
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.grupok.product_manager_strategy
+      class: GrupoKProductManagerStrategy
+      params:
+        rep_id_filter: null
+        role_code: gerente_de_producto_rev_blandos_cocinas_y_muebles
+        sales_columns:
+          - linea_negocio_mb
+
+    output:
+      tab_name: PLAN_892
+      clear_before_write: true
+
+  PLAN_921:
+    active: true
+    name: Subgerente PM Hidrosanitario
+    description: Comisiones para Subgerente de Product Manager Hidrosanitario
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://mk.buk.cl/api/v1/chile/employees
+          auth_token: 4rpH4uPQtL2qLQKUHjqmjPF9
+          paginated: true
+          page_size: 100
+
+      - id: sales
+        type: api
+        config:
+          base_url: http://webapi.mk.cl
+          path: /mk/GetFileBaseComisionProyecto
+          headers:
+            XApiKey: pgH7QzFHJx4w46fI~5Uzi4RvtTwlEXp
+          response_format: csv
+          separator: ";"
+          encoding: utf-8
+          timeout: 60
+
+      - id: commission_tiers
+        type: json
+        config:
+          path: data/grupok/subgte_pm_hidro.json
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: grupok_subgerente_merge
+        employees_key: employees
+        sales_key: sales
+        tiers_key: commission_tiers
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.grupok.subgerente_strategy
+      class: GrupoKSubgerenteStrategy
+      params:
+        rep_id_filter: null
+        pm_role_code: gerente_de_productos_hidrosanitario
+        sales_columns:
+          - linea_negocio_hi
+
+    output:
+      tab_name: PLAN_921
+      clear_before_write: true
+
+  PLAN_924:
+    active: true
+    name: Subgerente Producto Rev Blando
+    description: Comisiones para Subgerente de Producto Revestimientos Blandos
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://mk.buk.cl/api/v1/chile/employees
+          auth_token: 4rpH4uPQtL2qLQKUHjqmjPF9
+          paginated: true
+          page_size: 100
+
+      - id: sales
+        type: api
+        config:
+          base_url: http://webapi.mk.cl
+          path: /mk/GetFileBaseComisionProyecto
+          headers:
+            XApiKey: pgH7QzFHJx4w46fI~5Uzi4RvtTwlEXp
+          response_format: csv
+          separator: ";"
+          encoding: utf-8
+          timeout: 60
+
+      - id: commission_tiers
+        type: json
+        config:
+          path: data/grupok/subgte_pm_rb.json
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: grupok_subgerente_merge
+        employees_key: employees
+        sales_key: sales
+        tiers_key: commission_tiers
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.grupok.subgerente_strategy
+      class: GrupoKSubgerenteStrategy
+      params:
+        rep_id_filter: null
+        pm_role_code: gerente_de_producto_rev_blandos_cocinas_y_muebles
+        sales_columns:
+          - linea_negocio_rb
+        subgerente_ruts:
+          - "16.939.541-1"
+
+    output:
+      tab_name: PLAN_924
+      clear_before_write: true
+
+  PLAN_925:
+    active: true
+    name: Subgerente PM Muebles y Cocinas
+    description: Comisiones para Subgerente de Product Manager Muebles y Cocinas
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://mk.buk.cl/api/v1/chile/employees
+          auth_token: 4rpH4uPQtL2qLQKUHjqmjPF9
+          paginated: true
+          page_size: 100
+
+      - id: sales
+        type: api
+        config:
+          base_url: http://webapi.mk.cl
+          path: /mk/GetFileBaseComisionProyecto
+          headers:
+            XApiKey: pgH7QzFHJx4w46fI~5Uzi4RvtTwlEXp
+          response_format: csv
+          separator: ";"
+          encoding: utf-8
+          timeout: 60
+
+      - id: commission_tiers
+        type: json
+        config:
+          path: data/grupok/subgte_pm_mc.json
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: grupok_subgerente_merge
+        employees_key: employees
+        sales_key: sales
+        tiers_key: commission_tiers
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.grupok.subgerente_strategy
+      class: GrupoKSubgerenteStrategy
+      params:
+        rep_id_filter: null
+        pm_role_code: gerente_de_producto_rev_blandos_cocinas_y_muebles
+        sales_columns:
+          - linea_negocio_mb
+        subgerente_ruts:
+          - "17.597.728-7"  # Felipe Herrera
+
+    output:
+      tab_name: PLAN_925
+      clear_before_write: true
+
+  PLAN_866:
+    active: true
+    name: Subgerente PM Revestimientos Duros
+    description: Comisiones para Subgerente de Product Manager Revestimientos Duros
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://mk.buk.cl/api/v1/chile/employees
+          auth_token: 4rpH4uPQtL2qLQKUHjqmjPF9
+          paginated: true
+          page_size: 100
+
+      - id: sales
+        type: api
+        config:
+          base_url: http://webapi.mk.cl
+          path: /mk/GetFileBaseComisionProyecto
+          headers:
+            XApiKey: pgH7QzFHJx4w46fI~5Uzi4RvtTwlEXp
+          response_format: csv
+          separator: ";"
+          encoding: utf-8
+          timeout: 60
+
+      - id: commission_tiers
+        type: json
+        config:
+          path: data/grupok/sgt_pm_rd.json
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: grupok_subgerente_merge
+        employees_key: employees
+        sales_key: sales
+        tiers_key: commission_tiers
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.grupok.subgerente_strategy
+      class: GrupoKSubgerenteStrategy
+      params:
+        rep_id_filter: null
+        pm_role_code: gerente_de_producto_revestimientos_duros
+        sales_columns:
+          - linea_negocio_rd
+
+    output:
+      tab_name: PLAN_866
+      clear_before_write: true

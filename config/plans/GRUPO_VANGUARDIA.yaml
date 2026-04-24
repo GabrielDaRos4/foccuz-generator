@@ -1,0 +1,151 @@
+metadata:
+  client_id: "GRUPO_VANGUARDIA"
+  client_name: "Grupo Vanguardia"
+  active: true
+  gsheet_output: "17oNF-StkBQs4zwX8xUhWxeV3GCQvYZQqziJlLbALUCo"
+
+plans:
+  PLAN_833:
+    name: "Bono Marca ACURA"
+    active: true
+
+    script:
+      module: "src.context.commissions.infrastructure.processing_strategies.custom.grupo_vanguardia.monedero.brand_bonus_strategy"
+      class: "BrandBonusStrategy"
+      params:
+        brand: "ACURA"
+        min_sales: 3
+        bonus_amount: 8000
+
+    data_sources:
+      - id: "sales"
+        type: "api"
+        config:
+          base_url: "https://45.190.240.202:400"
+          path: "/vgd/ordersdetail"
+          headers:
+            X-Provider-Token: "${GRUPO_VANGUARDIA_API_TOKEN}"
+            User-Agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+          paginated: true
+          page_param: "page"
+          size_param: "perpage"
+          page_size: 1000
+          data_path: "data.data"
+          total_pages_path: "data.total_pages"
+          params:
+            Brand: "ACURA"
+
+      - id: "consultants"
+        type: "api"
+        config:
+          base_url: "https://45.190.240.202:400"
+          path: "/vgd/consultants"
+          headers:
+            X-Provider-Token: "${GRUPO_VANGUARDIA_API_TOKEN}"
+            User-Agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+          paginated: true
+          page_param: "page"
+          size_param: "perpage"
+          page_size: 1000
+          data_path: "data.data"
+          total_pages_path: "data.total_pages"
+
+    data_merge_strategy:
+      type: "custom"
+      config:
+        strategy_name: "grupo_vanguardia_sales_merge"
+        primary_source: "sales"
+
+    output:
+      tab_name: "PLAN_833"
+      clear_before_write: true
+
+  PLAN_834:
+    name: "Bono Marca HONDA"
+    active: true
+
+    script:
+      module: "src.context.commissions.infrastructure.processing_strategies.custom.grupo_vanguardia.monedero.brand_bonus_strategy"
+      class: "BrandBonusStrategy"
+      params:
+        brand: "HONDA"
+        min_sales: 4
+        bonus_amount: 8000
+
+    data_sources:
+      - id: "sales"
+        type: "api"
+        config:
+          base_url: "https://45.190.240.202:400"
+          path: "/vgd/ordersdetail"
+          headers:
+            X-Provider-Token: "${GRUPO_VANGUARDIA_API_TOKEN}"
+            User-Agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+          paginated: true
+          page_param: "page"
+          size_param: "perpage"
+          page_size: 100
+          data_path: "data.data"
+          total_pages_path: "data.total_pages"
+          params:
+            Brand: "HONDA"
+
+      - id: "consultants"
+        type: "api"
+        config:
+          base_url: "https://45.190.240.202:400"
+          path: "/vgd/consultants"
+          headers:
+            X-Provider-Token: "${GRUPO_VANGUARDIA_API_TOKEN}"
+            User-Agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+          paginated: true
+          page_param: "page"
+          size_param: "perpage"
+          page_size: 100
+          data_path: "data.data"
+          total_pages_path: "data.total_pages"
+
+    data_merge_strategy:
+      type: "custom"
+      config:
+        strategy_name: "grupo_vanguardia_sales_merge"
+        primary_source: "sales"
+
+    output:
+      tab_name: "PLAN_834"
+      clear_before_write: true
+
+  PLAN_576:
+    name: "Comisiones Monedero"
+    active: true
+
+    script:
+      module: "src.context.commissions.infrastructure.processing_strategies.custom.grupo_vanguardia.monedero.monedero_strategy"
+      class: "MonederoCommissionStrategy"
+
+    data_sources:
+      - id: "sales"
+        type: "api"
+        config:
+          base_url: "https://45.190.240.202:400"
+          path: "/vgd/ordersdetail"
+          headers:
+            X-Provider-Token: "${GRUPO_VANGUARDIA_API_TOKEN}"
+            User-Agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+          paginated: true
+          page_param: "page"
+          size_param: "perpage"
+          page_size: 1000
+          data_path: "data.data"
+          total_pages_path: "data.total_pages"
+
+    data_merge_strategy:
+      type: "custom"
+      config:
+        strategy_name: "monedero_sales_merge"
+        primary_source: "sales"
+
+    output:
+      sheet_id: "1cGuh1AsVu3L0Fe2HVNAzbgaeQVhRtbQ-9HVYHcPkKgc"
+      tab_name: "PLAN_576"
+      clear_before_write: true

@@ -1,0 +1,206 @@
+metadata:
+  client_id: LEMONTECH
+  client_name: Lemontech
+  active: true
+  gsheet_output: 1JTgxy1clSJC1-R1vCI9sWdk6LsSJzC-AdUddNj6GYZU
+
+plans:
+  PLAN_654:
+    active: true
+    name: Comision Mensual
+    description: Comisiones mensuales basadas en cumplimiento de meta
+
+    data_sources:
+      - id: deals
+        type: foccuz
+        config:
+          tenant_id: lemontech
+          query: |
+            SELECT
+                "Deal"."id",
+                "Deal"."ownerRepId",
+                "Deal"."customProps"->> 'tipo_de_venta' AS "Tipo de Venta",
+                "Deal"."closeDate",
+                "Deal"."name",
+                "Deal"."customProps"->> 'amount_in_home_currency' AS "Amount in company currency",
+                "CustomDealStagePipeline"."pipelineLabel",
+                "Deal"."customProps"->> 'tipo_de_cobro__c' AS "Tipo de Cobro",
+                "Deal"."type" AS "Opp Type"
+            FROM "Deal"
+            LEFT JOIN (SELECT DISTINCT
+              "CustomDealStagePipeline"."pipelineLabel" AS "pipelineLabel",
+              "CustomDealStagePipeline"."pipelineId" AS "pipelineId"
+            FROM "public"."CustomDealStagePipeline") "CustomDealStagePipeline"
+            ON "CustomDealStagePipeline"."pipelineId" = "Deal"."customProps"->> 'pipeline'
+            WHERE "Deal"."tenantId" = 'lemontech'
+            AND "Deal"."stage" = 'CLOSED_WON'
+
+      - id: goals
+        type: gsheet
+        config:
+          sheet_id: 1JTgxy1clSJC1-R1vCI9sWdk6LsSJzC-AdUddNj6GYZU
+          tab_name: Goals
+          key: goals
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: lemontech_monthly_merge
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.lemontech.monthly_commission_strategy
+      class: LemontechMonthlyCommissionStrategy
+
+    output:
+      tab_name: PLAN_654
+      clear_before_write: true
+
+  HEADER_PLAN_654:
+    active: true
+    name: Header Comision Mensual
+    description: Resumen mensual por representante
+
+    data_sources:
+      - id: deals
+        type: foccuz
+        config:
+          tenant_id: lemontech
+          query: |
+            SELECT
+                "Deal"."id",
+                "Deal"."ownerRepId",
+                "Deal"."customProps"->> 'tipo_de_venta' AS "Tipo de Venta",
+                "Deal"."closeDate",
+                "Deal"."name",
+                "Deal"."customProps"->> 'amount_in_home_currency' AS "Amount in company currency",
+                "CustomDealStagePipeline"."pipelineLabel",
+                "Deal"."customProps"->> 'tipo_de_cobro__c' AS "Tipo de Cobro",
+                "Deal"."type" AS "Opp Type"
+            FROM "Deal"
+            LEFT JOIN (SELECT DISTINCT
+              "CustomDealStagePipeline"."pipelineLabel" AS "pipelineLabel",
+              "CustomDealStagePipeline"."pipelineId" AS "pipelineId"
+            FROM "public"."CustomDealStagePipeline") "CustomDealStagePipeline"
+            ON "CustomDealStagePipeline"."pipelineId" = "Deal"."customProps"->> 'pipeline'
+            WHERE "Deal"."tenantId" = 'lemontech'
+            AND "Deal"."stage" = 'CLOSED_WON'
+
+      - id: goals
+        type: gsheet
+        config:
+          sheet_id: 1JTgxy1clSJC1-R1vCI9sWdk6LsSJzC-AdUddNj6GYZU
+          tab_name: Goals
+          key: goals
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: lemontech_monthly_merge
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.lemontech.monthly_header_strategy
+      class: LemontechMonthlyHeaderStrategy
+
+    output:
+      tab_name: HEADER_PLAN_654
+      clear_before_write: true
+
+  PLAN_655:
+    active: true
+    name: Bono Trimestral
+    description: Deals trimestrales con comision cero
+
+    data_sources:
+      - id: deals
+        type: foccuz
+        config:
+          tenant_id: lemontech
+          query: |
+            SELECT
+                "Deal"."id",
+                "Deal"."ownerRepId",
+                "Deal"."customProps"->> 'tipo_de_venta' AS "Tipo de Venta",
+                "Deal"."closeDate",
+                "Deal"."name",
+                "Deal"."customProps"->> 'amount_in_home_currency' AS "Amount in company currency",
+                "CustomDealStagePipeline"."pipelineLabel",
+                "Deal"."customProps"->> 'tipo_de_cobro__c' AS "Tipo de Cobro",
+                "Deal"."type" AS "Opp Type"
+            FROM "Deal"
+            LEFT JOIN (SELECT DISTINCT
+              "CustomDealStagePipeline"."pipelineLabel" AS "pipelineLabel",
+              "CustomDealStagePipeline"."pipelineId" AS "pipelineId"
+            FROM "public"."CustomDealStagePipeline") "CustomDealStagePipeline"
+            ON "CustomDealStagePipeline"."pipelineId" = "Deal"."customProps"->> 'pipeline'
+            WHERE "Deal"."tenantId" = 'lemontech'
+            AND "Deal"."stage" = 'CLOSED_WON'
+
+      - id: goals
+        type: gsheet
+        config:
+          sheet_id: 1JTgxy1clSJC1-R1vCI9sWdk6LsSJzC-AdUddNj6GYZU
+          tab_name: Goals
+          key: goals
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: lemontech_quarterly_merge
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.lemontech.quarterly_bonus_strategy
+      class: LemontechQuarterlyBonusStrategy
+
+    output:
+      tab_name: PLAN_655
+      clear_before_write: true
+
+  HEADER_PLAN_655:
+    active: true
+    name: Header Bono Trimestral
+    description: Resumen trimestral con bono por cumplimiento
+
+    data_sources:
+      - id: deals
+        type: foccuz
+        config:
+          tenant_id: lemontech
+          query: |
+            SELECT
+                "Deal"."id",
+                "Deal"."ownerRepId",
+                "Deal"."customProps"->> 'tipo_de_venta' AS "Tipo de Venta",
+                "Deal"."closeDate",
+                "Deal"."name",
+                "Deal"."customProps"->> 'amount_in_home_currency' AS "Amount in company currency",
+                "CustomDealStagePipeline"."pipelineLabel",
+                "Deal"."customProps"->> 'tipo_de_cobro__c' AS "Tipo de Cobro",
+                "Deal"."type" AS "Opp Type"
+            FROM "Deal"
+            LEFT JOIN (SELECT DISTINCT
+              "CustomDealStagePipeline"."pipelineLabel" AS "pipelineLabel",
+              "CustomDealStagePipeline"."pipelineId" AS "pipelineId"
+            FROM "public"."CustomDealStagePipeline") "CustomDealStagePipeline"
+            ON "CustomDealStagePipeline"."pipelineId" = "Deal"."customProps"->> 'pipeline'
+            WHERE "Deal"."tenantId" = 'lemontech'
+            AND "Deal"."stage" = 'CLOSED_WON'
+
+      - id: goals
+        type: gsheet
+        config:
+          sheet_id: 1JTgxy1clSJC1-R1vCI9sWdk6LsSJzC-AdUddNj6GYZU
+          tab_name: Goals
+          key: goals
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: lemontech_quarterly_merge
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.lemontech.quarterly_header_strategy
+      class: LemontechQuarterlyHeaderStrategy
+
+    output:
+      tab_name: HEADER_PLAN_655
+      clear_before_write: true

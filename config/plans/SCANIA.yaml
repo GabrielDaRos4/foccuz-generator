@@ -1,0 +1,1370 @@
+metadata:
+  client_id: SCANIA
+  client_name: Scania Chile S.A.
+  active: true
+  gsheet_output: 1uOx9ZdAFNlRpz8dyJN1nbTkd4S6mfv8fIQEQgErup6o
+
+plans:
+  PLAN_777:
+    active: true
+    name: Operario Bodega Siniestros
+    description: Comisiones para Operario de Bodega Siniestros
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Operario_Bodega_Siniestros.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.claims.claims_warehouse_operator_strategy
+      class: ClaimsWarehouseOperatorStrategy
+      params:
+        role_filter:
+          - encargado_de_repuestos_y_bodega
+        show_zero_commission: true
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_777
+      clear_before_write: true
+
+  PLAN_798:
+    active: true
+    name: Jefe CWS
+    description: Comisiones para Jefes CWS
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Jefe_CWS.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.cws.cws_manager_strategy
+      class: CWSManagerStrategy
+      params:
+        role_filter:
+          - jefe_de_operaciones
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_798
+      clear_before_write: true
+
+  PLAN_628:
+    active: true
+    name: Jefe de Servicio
+    description: Comisiones para Jefes de Servicio
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Jefe_Servicio.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.service_manager.service_manager_strategy
+      class: ServiceManagerStrategy
+      params:
+        role_filter:
+          - jefe_de_servicio
+          - jefe_de_sucursal
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_628
+      clear_before_write: true
+
+  PLAN_629:
+    active: true
+    name: Jefe de Taller
+    description: Comisiones para Jefes de Taller
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Jefe_Taller.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.service_manager.workshop_manager_strategy
+      class: WorkshopManagerStrategy
+      params:
+        role_filter:
+          - jefe_de_taller
+        show_zero_commission: true
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_629
+      clear_before_write: true
+
+  PLAN_743:
+    active: true
+    name: Supervisor de Taller
+    description: Comisiones para Supervisores de Taller
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Supervisor_Taller.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.service_manager.workshop_supervisor_strategy
+      class: WorkshopSupervisorStrategy
+      params:
+        role_filter:
+          - supervisor_de_taller
+          - supervisor_de_turno
+        include_inactive: true
+        show_zero_commission: true
+
+    output:
+      tab_name: PLAN_743
+      clear_before_write: true
+
+  PLAN_625:
+    active: true
+    name: Asesor de Servicio
+    description: Comisiones para Asesores de Servicio
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Asesor_Servicios.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.service_manager.service_advisor_strategy
+      class: ServiceAdvisorStrategy
+      params:
+        role_filter:
+          - asesor_de_servicios
+        excluded_ids:
+          - 5168
+          - 5871
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_625
+      clear_before_write: true
+
+  PLAN_627:
+    active: true
+    name: Encargado R&B
+    description: Comisiones para Encargados de Repuestos y Bodega
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Encargado_Vendedor_Repuestos_Bodega.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.service_manager.rb_manager_strategy
+      class: RBManagerStrategy
+      params:
+        role_filter:
+          - encargado_de_repuestos_y_bodega
+        excluded_ids:
+          - 5211
+        show_zero_commission: true
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_627
+      clear_before_write: true
+
+  PLAN_660:
+    active: true
+    name: Encargado ADM
+    description: Comisiones para Encargados de Administracion
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Encargado_Administracion.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.service_manager.admin_manager_strategy
+      class: AdminManagerStrategy
+      params:
+        role_filter:
+          - encargado_de_administracion
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_660
+      clear_before_write: true
+
+  PLAN_736:
+    active: true
+    name: Jefe Desabolladuria y Pintura
+    description: Comisiones para Jefes de Desabolladuria y Pintura
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Jefe_Desabolladuria_Pintura.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.service_manager.desabo_manager_strategy
+      class: DesaboManagerStrategy
+      params:
+        role_filter:
+          - jefe_de_desabolladuria_y_pintura
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_736
+      clear_before_write: true
+
+  PLAN_663:
+    active: true
+    name: Jefe Taller Siniestro
+    description: Comisiones para Jefe de Taller de Siniestro
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Supervisor_Taller.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.claims.claims_workshop_manager_strategy
+      class: ClaimsWorkshopManagerStrategy
+      params:
+        role_filter:
+          - jefe_de_taller_de_siniestro
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_663
+      clear_before_write: true
+
+  PLAN_666:
+    active: true
+    name: Operario CD
+    description: Comisiones para Operarios de Centro de Distribucion
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Operario_Bodega_DIS.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.compliance.cd_operator_strategy
+      class: CDOperatorStrategy
+      params:
+        role_filter:
+          - operario_de_bodega
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_666
+      clear_before_write: true
+
+  PLAN_710:
+    active: true
+    name: Tecnico Mecanico
+    description: Comisiones para Tecnicos Mecanicos
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Tecnico_Mecanico.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.technician.mechanic_technician_strategy
+      class: MechanicTechnicianStrategy
+      params:
+        role_filter:
+          - tecnico_mecanico
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_710
+      clear_before_write: true
+
+  PLAN_631:
+    active: true
+    name: Vendedor Repuestos
+    description: Comisiones para Vendedores de Repuestos
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Vendedor_Repuestos.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.compliance.parts_sales_rep_strategy
+      class: PartsSalesRepStrategy
+      params:
+        role_filter:
+          - vendedor_de_repuestos
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_631
+      clear_before_write: true
+
+  PLAN_669:
+    active: true
+    name: Jefe Zona
+    description: Comisiones para Jefes de Zona
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Jefe_Zona.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.compliance.zone_manager_strategy
+      class: ZoneManagerStrategy
+      params:
+        role_filter:
+          - jefe_de_zona
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_669
+      clear_before_write: true
+
+  PLAN_719:
+    active: true
+    name: Administrativo CD
+    description: Comisiones para Administrativos de Centro de Distribucion
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Administrativo_DIS.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.compliance.cd_admin_strategy
+      class: CDAdminStrategy
+      params:
+        role_filter: []
+        employee_ids:
+          - 5202
+          - 5007
+          - 5177
+          - 4983
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_719
+      clear_before_write: true
+
+  PLAN_735:
+    active: true
+    name: Vendedor Repuestos y Bodega
+    description: Comisiones para Vendedores de Repuestos y Bodega
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Encargado_Vendedor_Repuestos_Bodega.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.compliance.parts_warehouse_rep_strategy
+      class: PartsWarehouseRepStrategy
+      params:
+        role_filter:
+          - vendedor_de_repuestos_y_bodega
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_735
+      clear_before_write: true
+
+  PLAN_737:
+    active: true
+    name: Coordinador Motores
+    description: Comisiones para Coordinadores de Motores
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Coordinador_Motores.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.compliance.engine_coordinator_strategy
+      class: EngineCoordinatorStrategy
+      params:
+        role_filter: []
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_737
+      clear_before_write: true
+
+  PLAN_738:
+    active: true
+    name: Preventa
+    description: Comisiones para Preventa
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Preventa.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.compliance.presales_strategy
+      class: PresalesStrategy
+      params:
+        role_filter:
+          - ejecutivo_de_preventa
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_738
+      clear_before_write: true
+
+  PLAN_739:
+    active: true
+    name: Torre Control
+    description: Comisiones para Torre de Control
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Torre_Control.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.compliance.control_tower_strategy
+      class: ControlTowerStrategy
+      params:
+        role_filter:
+          - torre_de_control
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_739
+      clear_before_write: true
+
+  PLAN_740:
+    active: true
+    name: Asesor Siniestros
+    description: Comisiones para Asesores de Siniestros
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Asesor_Servicios_DP.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.claims.claims_advisor_strategy
+      class: ClaimsAdvisorStrategy
+      params:
+        role_filter: []
+        employee_ids:
+          - "5168"
+          - "5871"
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_740
+      clear_before_write: true
+
+  PLAN_741:
+    active: true
+    name: Jefe de Taller Siniestros
+    description: Comisiones para Jefes de Taller de Siniestros
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Tecnicos_DP.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.claims.claims_technician_strategy
+      class: ClaimsTechnicianStrategy
+      params:
+        role_filter: []
+        employee_ids:
+          - "4962"
+          - "5083"
+          - "5022"
+          - "5767"
+          - "5789"
+          - "5857"
+          - "5952"
+          - "5954"
+          - "5956"
+          - "7676"
+          - "5120"
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_741
+      clear_before_write: true
+
+  PLAN_746:
+    active: true
+    name: Ejecutivo Venta Nuevo
+    description: Comisiones para Ejecutivos de Venta Nuevo
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Ejecutivo_Venta_Nuevo.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.compliance.new_sales_executive_strategy
+      class: NewSalesExecutiveStrategy
+      params:
+        role_filter:
+          - ejecutivo_de_ventas
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_746
+      clear_before_write: true
+
+  PLAN_747:
+    active: true
+    name: Ejecutivo Venta Usado
+    description: Comisiones para Ejecutivos de Venta Usado
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Ejecutivo_Venta_Usado.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.compliance.used_sales_executive_strategy
+      class: UsedSalesExecutiveStrategy
+      params:
+        role_filter:
+          - ejecutivo_de_ventas
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_747
+      clear_before_write: true
+
+  PLAN_748:
+    active: true
+    name: Ejecutivo Venta Buses
+    description: Comisiones para Ejecutivos de Venta Buses
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Ejecutivo_Venta_Buses.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.compliance.bus_sales_executive_strategy
+      class: BusSalesExecutiveStrategy
+      params:
+        role_filter:
+          - ejecutivo_de_ventas_buses
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_748
+      clear_before_write: true
+
+  PLAN_749:
+    active: true
+    name: Asesor Comercial Servicios
+    description: Comisiones para Asesores Comerciales de Servicios
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Asesor_Comercial_Servicios.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.compliance.services_commercial_advisor_strategy
+      class: ServicesCommercialAdvisorStrategy
+      params:
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_749
+      clear_before_write: true
+
+  PLAN_761:
+    active: true
+    name: Tecnico CWS
+    description: Comisiones para Tecnicos CWS
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Tecnico_Mecanico_Faena.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.cws.cws_technician_strategy
+      class: CWSTechnicianStrategy
+      params:
+        role_filter:
+          - tecnico_en_faena
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_761
+      clear_before_write: true
+
+  PLAN_762:
+    active: true
+    name: Supervisor de CWS y Logistica
+    description: Comisiones para Supervisores de CWS y Logistica
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Supervisor_CWS.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.cws.cws_supervisor_strategy
+      class: CWSSupervisorStrategy
+      params:
+        role_filter: []
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_762
+      clear_before_write: true
+
+  PLAN_763:
+    active: true
+    name: Jefe Comercial
+    description: Comisiones para Jefes Comerciales
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Jefe_Comercial.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.compliance.commercial_manager_strategy
+      class: CommercialManagerStrategy
+      params:
+        role_filter: []
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_763
+      clear_before_write: true
+
+  PLAN_764:
+    active: true
+    name: Asistencia Tecnica
+    description: Comisiones para Asistencia Tecnica
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Asistencia_Tecnica.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.compliance.technical_assistance_strategy
+      class: TechnicalAssistanceStrategy
+      params:
+        role_filter: []
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_764
+      clear_before_write: true
+
+  PLAN_774:
+    active: true
+    name: Operario Bodega Santiago
+    description: Comisiones para Operarios de Bodega Santiago
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Operario_Bodega_Santiago.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.compliance.santiago_operator_strategy
+      class: SantiagoOperatorStrategy
+      params:
+        role_filter: []
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_774
+      clear_before_write: true
+
+  PLAN_775:
+    active: true
+    name: Operario Bodega Regiones
+    description: Comisiones para Operarios de Bodega en Regiones
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Operario_Bodega_Regiones.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.compliance.regions_operator_strategy
+      class: RegionsOperatorStrategy
+      params:
+        role_filter: []
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_775
+      clear_before_write: true
+
+  PLAN_776:
+    active: true
+    name: Coordinador Mercado
+    description: Comisiones para Coordinadores de Mercado
+
+    data_sources:
+      - id: employees
+        type: buk
+        config:
+          endpoint: https://scania.buk.cl/api/v1/chile/employees
+          auth_token: hXAKcz1u2ettda24K7MvyoGW
+          paginated: true
+          page_size: 100
+
+      - id: plan_data
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: scania/
+          pattern: "CL-*-Coordinador_Mercado.json"
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: scania_generic_merge
+        employees_key: employees
+        plan_data_key: plan_data
+        buk_base_url: https://scania.buk.cl/api/v1/chile
+        buk_api_token: hXAKcz1u2ettda24K7MvyoGW
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.scania.compliance.market_coordinator_strategy
+      class: MarketCoordinatorStrategy
+      params:
+        role_filter:
+          - coordinador_de_mercado_publico
+        include_inactive: true
+
+    output:
+      tab_name: PLAN_776
+      clear_before_write: true

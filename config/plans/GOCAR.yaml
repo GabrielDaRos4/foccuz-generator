@@ -1,0 +1,84 @@
+metadata:
+  client_id: GOCAR
+  client_name: Gocar Auto
+  active: true
+  gsheet_output: 1hGyZAvDU71pzs66ODnD8M9NNp00biaHb8TClTvY44qc
+
+plans:
+  PLAN_855:
+    active: true
+    name: Autos Nuevos
+    description: Comisiones por venta de autos nuevos
+
+    data_sources:
+      - id: sales
+        type: excel
+        config:
+          path: data/gocar/FOCCUZ 18Nov2025.xlsx
+          sheets:
+            - name: PT
+              key: sales
+              header_row: 0
+
+      - id: users_mapping
+        type: csv
+        config:
+          path: data/gocar/users_mapping.csv
+          encoding: utf-8-sig
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: gocar_commission_merge
+        sales_key: sales
+        users_key: users_mapping
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.gocar.gocar_commission_strategy
+      class: GocarCommissionStrategy
+      params:
+        department_type: NUEVOS
+        rep_id_filter: null
+
+    output:
+      tab_name: PLAN_855
+      clear_before_write: true
+
+  PLAN_854:
+    active: true
+    name: Autos Seminuevos
+    description: Comisiones por venta de autos seminuevos
+
+    data_sources:
+      - id: sales
+        type: excel
+        config:
+          path: data/gocar/FOCCUZ 18Nov2025.xlsx
+          sheets:
+            - name: PT
+              key: sales
+              header_row: 0
+
+      - id: users_mapping
+        type: csv
+        config:
+          path: data/gocar/users_mapping.csv
+          encoding: utf-8-sig
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: gocar_commission_merge
+        sales_key: sales
+        users_key: users_mapping
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.gocar.gocar_commission_strategy
+      class: GocarCommissionStrategy
+      params:
+        department_type: SEMINUEVOS
+        rep_id_filter: null
+
+    output:
+      tab_name: PLAN_854
+      clear_before_write: true

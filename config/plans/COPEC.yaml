@@ -1,0 +1,742 @@
+metadata:
+  client_id: COPEC
+  client_name: Copec S.A.
+  active: true
+  gsheet_output: 1J9ZYR18VGGI0Q9oXYFanc-giH-cNv7uFuW47n3D44Y4
+
+plans:
+  PLAN_800:
+    active: true
+    name: PLAN TCT - Clientes Nuevos
+    description: Plan de comisiones para producto TCT - Volumen clientes nuevos durante primeros 3 meses
+
+    data_sources:
+      - id: ventas_historicas
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: copec/Proy-ComAtendedores/venta_mensual_tct_tae/
+          pattern: "*_venta_mensual_tct_tae*.csv"
+          separator: '|'
+          encoding: utf-8
+          max_files: 15
+          sort_order: desc
+          current_key: ventas_mes_actual
+          historical_key_prefix: ventas_mes
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: copec_new_client_merge
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.copec.new_client.new_client_commission_strategy
+      class: CopecNewClientCommissionStrategy
+      params:
+        product_type: TCT
+        discount_percentage: 0.08
+        max_factor: 6.0
+        bono_nuevo: 10000
+        factor_minimo: 0.5
+        months_lookback: 14
+        rep_id_filter: null
+
+    output:
+      tab_name: PLAN_800
+      clear_before_write: true
+
+
+  PLAN_806:
+    active: true
+    name: PLAN TAE - Clientes Nuevos
+    description: Plan de comisiones para producto TAE - Volumen clientes nuevos durante primeros 3 meses
+
+    data_sources:
+      - id: ventas_historicas
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: copec/Proy-ComAtendedores/venta_mensual_tct_tae/
+          pattern: "*_venta_mensual_tct_tae*.csv"
+          separator: '|'
+          encoding: utf-8
+          max_files: 15
+          sort_order: desc
+          current_key: ventas_mes_actual
+          historical_key_prefix: ventas_mes
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: copec_new_client_merge
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.copec.new_client.new_client_commission_strategy
+      class: CopecNewClientCommissionStrategy
+      params:
+        product_type: TAE
+        discount_percentage: 0.08
+        max_factor: 6.0
+        bono_nuevo: 10000
+        factor_minimo: 0.5
+        months_lookback: 14
+        rep_id_filter: null
+
+    output:
+      tab_name: PLAN_806
+      clear_before_write: true
+
+
+  PLAN_835:
+    active: true
+    name: PLAN CE - Clientes Nuevos
+    description: Plan de comisiones para producto Cupon Electronico - Volumen clientes nuevos durante primeros 3 meses
+
+    data_sources:
+      - id: ventas_historicas
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: copec/Proy-ComAtendedores/venta_mensual_cupon_electronico/
+          pattern: "*_venta_mensual.csv"
+          separator: '|'
+          encoding: utf-8
+          max_files: 15
+          sort_order: desc
+          current_key: ventas_mes_actual
+          historical_key_prefix: ventas_mes
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: copec_new_client_merge
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.copec.new_client.new_client_commission_strategy
+      class: CopecNewClientCommissionStrategy
+      params:
+        product_type: CUPON ELECTRONICO
+        discount_percentage: 0.25
+        max_factor: 10.0
+        bono_nuevo: 0
+        factor_minimo: 0.5
+        months_lookback: 14
+        rep_id_filter: null
+
+    output:
+      tab_name: PLAN_835
+      clear_before_write: true
+
+  PLAN_836:
+    active: true
+    name: PLAN AppCE - Clientes Nuevos
+    description: Plan de comisiones para producto App Copec Empresa - Volumen clientes nuevos durante primeros 3 meses
+
+    data_sources:
+      - id: ventas_historicas
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: copec/Proy-ComAtendedores/venta_mensual_app_copec/
+          pattern: "*_venta_mensual_app_copec.csv"
+          separator: '|'
+          encoding: utf-8
+          max_files: 15
+          sort_order: desc
+          current_key: ventas_mes_actual
+          historical_key_prefix: ventas_mes
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: copec_new_client_merge
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.copec.new_client.new_client_commission_strategy
+      class: CopecNewClientCommissionStrategy
+      params:
+        product_type: App Copec Empresa Combustible
+        discount_percentage: 0.25
+        max_factor: 10.0
+        bono_nuevo: 0
+        factor_minimo: 0.5
+        months_lookback: 14
+        rep_id_filter: null
+
+    output:
+      tab_name: PLAN_836
+      clear_before_write: true
+
+  PLAN_837:
+    active: true
+    name: PLAN TCT Premium - Patentes Nuevas
+    description: Plan de comisiones para producto TCT Premium - Bono por patentes nuevas en primeros 3 meses
+
+    data_sources:
+      - id: ventas_historicas
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: copec/Proy-ComAtendedores/venta_mensual_tct_premium/
+          pattern: "*_venta_mensual*.csv"
+          separator: '|'
+          encoding: utf-8
+          max_files: 15
+          sort_order: desc
+          current_key: ventas_mes_actual
+          historical_key_prefix: ventas_mes
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: copec_new_client_merge
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.copec.tct_premium.tct_premium_bonus_strategy
+      class: TctPremiumBonusStrategy
+      params:
+        product_type: TCT PREMIUM
+        months_lookback: 14
+        rep_id_filter: null
+
+    output:
+      tab_name: PLAN_837
+      clear_before_write: true
+
+  PLAN_838:
+    active: true
+    name: PLAN BM AppCE - Clientes Nuevos
+    description: Plan de comisiones para producto Bluemax App Copec Empresa - Volumen clientes nuevos durante primeros 3 meses
+
+    data_sources:
+      - id: ventas_historicas
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: copec/Proy-ComAtendedores/venta_mensual_app_copec/
+          pattern: "*_venta_mensual_app_copec.csv"
+          separator: '|'
+          encoding: utf-8
+          max_files: 15
+          sort_order: desc
+          current_key: ventas_mes_actual
+          historical_key_prefix: ventas_mes
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: copec_new_client_merge
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.copec.new_client.new_client_commission_strategy
+      class: CopecNewClientCommissionStrategy
+      params:
+        product_type: App Copec Empresa Bluemax
+        discount_percentage: 0.25
+        max_factor: 30.0
+        bono_nuevo: 0
+        factor_minimo: 0.5
+        months_lookback: 14
+        rep_id_filter: null
+
+    output:
+      tab_name: PLAN_838
+      clear_before_write: true
+
+  PLAN_839:
+    active: true
+    name: PLAN BM TCT - Clientes Nuevos
+    description: Plan de comisiones para producto Bluemax TCT - Volumen clientes nuevos durante primeros 3 meses
+
+    data_sources:
+      - id: ventas_historicas
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: copec/Proy-ComAtendedores/venta_mensual_bluemax_tarjetas/
+          pattern: "*_venta_mensual*.csv"
+          separator: '|'
+          encoding: utf-8
+          max_files: 15
+          sort_order: desc
+          current_key: ventas_mes_actual
+          historical_key_prefix: ventas_mes
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: copec_new_client_merge
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.copec.new_client.new_client_commission_strategy
+      class: CopecNewClientCommissionStrategy
+      params:
+        product_type:
+          - Bluemax Indirecto TCT
+          - Bluemax Directo TCT
+        discount_percentage: 0.25
+        max_factor: 30.0
+        bono_nuevo: 0
+        factor_minimo: 0.5
+        months_lookback: 14
+        rep_id_filter: null
+        volume_col: volumen_lts
+        discount_col: descuento
+
+    output:
+      tab_name: PLAN_839
+      clear_before_write: true
+
+  PLAN_842:
+    active: true
+    name: PLAN Lubricantes
+    description: Plan de comisiones para Lubricantes
+
+    data_sources:
+      - id: comisiones_lubricantes
+        type: excel
+        config:
+          path: data/copec/comisiones-lub.xlsx
+          sheets:
+            - name: Detalle Comisión Mes
+              key: detalle_comision_mes
+              header_row: 0
+            - name: Comisión Venta Mensual
+              key: comision_venta_mensual
+              header_row: 2
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: copec_lubricants_merge
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.copec.lubricants.lubricants_commission_strategy
+      class: CopecLubricantsCommissionStrategy
+      params:
+        rep_id_filter: null
+
+    output:
+      tab_name: PLAN_842
+      clear_before_write: true
+
+  PLAN_786:
+    active: true
+    name: Bono Cumplimiento POA Volumen
+    description: Resumen de volumenes por producto para cumplimiento POA
+
+    data_sources:
+      - id: tct_tae
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: copec/Proy-ComAtendedores/venta_mensual_tct_tae/
+          pattern: "*_venta_mensual_tct_tae*.csv"
+          separator: '|'
+          encoding: utf-8
+          max_files: 15
+          sort_order: desc
+          current_key: tct_tae_actual
+          historical_key_prefix: tct_tae_
+
+      - id: cupon_electronico
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: copec/Proy-ComAtendedores/venta_mensual_cupon_electronico/
+          pattern: "*_venta_mensual.csv"
+          separator: '|'
+          encoding: utf-8
+          max_files: 15
+          sort_order: desc
+          current_key: cupon_electronico_actual
+          historical_key_prefix: cupon_electronico_
+
+      - id: app_copec
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: copec/Proy-ComAtendedores/venta_mensual_app_copec/
+          pattern: "*_venta_mensual_app_copec*.csv"
+          separator: '|'
+          encoding: utf-8
+          max_files: 15
+          sort_order: desc
+          current_key: app_copec_actual
+          historical_key_prefix: app_copec_
+
+      - id: bluemax
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: copec/Proy-ComAtendedores/venta_mensual_bluemax_tarjetas/
+          pattern: "*_venta_mensual*.csv"
+          separator: '|'
+          encoding: utf-8
+          max_files: 15
+          sort_order: desc
+          current_key: bluemax_actual
+          historical_key_prefix: bluemax_
+
+      - id: tct_premium
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: copec/Proy-ComAtendedores/venta_mensual_tct_premium/
+          pattern: "*_venta_mensual*.csv"
+          separator: '|'
+          encoding: utf-8
+          max_files: 15
+          sort_order: desc
+          current_key: tct_premium_actual
+          historical_key_prefix: tct_premium_
+
+      - id: lubricantes
+        type: excel
+        config:
+          path: data/copec/comisiones-lub.xlsx
+          sheets:
+            - name: Detalle Comisión Mes
+              key: lubricantes
+              header_row: 0
+
+      - id: poa
+        type: excel
+        config:
+          path: data/copec/POA.xlsx
+          sheets:
+            - name: Resumen
+              key: poa_resumen
+              header_row: 0
+
+      - id: bonus
+        type: excel
+        config:
+          path: data/copec/bono-2025.xlsx
+          sheets:
+            - name: BONOS
+              key: bonus
+              header_row: 2
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: copec_poa_compliance_merge
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.copec.poa_compliance.poa_compliance_strategy
+      class: CopecPoaComplianceStrategy
+      params:
+        rep_id_filter: null
+        metric_type: volumen
+
+    output:
+      tab_name: PLAN_786
+      clear_before_write: true
+
+  PLAN_856:
+    active: true
+    name: Bono Cumplimiento POA Margen
+    description: Resumen de margenes por producto para cumplimiento POA
+
+    data_sources:
+      - id: tct_tae
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: copec/Proy-ComAtendedores/venta_mensual_tct_tae/
+          pattern: "*_venta_mensual_tct_tae*.csv"
+          separator: '|'
+          encoding: utf-8
+          max_files: 15
+          sort_order: desc
+          current_key: tct_tae_actual
+          historical_key_prefix: tct_tae_
+
+      - id: cupon_electronico
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: copec/Proy-ComAtendedores/venta_mensual_cupon_electronico/
+          pattern: "*_venta_mensual.csv"
+          separator: '|'
+          encoding: utf-8
+          max_files: 15
+          sort_order: desc
+          current_key: cupon_electronico_actual
+          historical_key_prefix: cupon_electronico_
+
+      - id: bluemax
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: copec/Proy-ComAtendedores/venta_mensual_bluemax_tarjetas/
+          pattern: "*_venta_mensual*.csv"
+          separator: '|'
+          encoding: utf-8
+          max_files: 15
+          sort_order: desc
+          current_key: bluemax_actual
+          historical_key_prefix: bluemax_
+
+      - id: poa
+        type: excel
+        config:
+          path: data/copec/POA.xlsx
+          sheets:
+            - name: Resumen
+              key: poa_resumen
+              header_row: 0
+
+      - id: bonus
+        type: excel
+        config:
+          path: data/copec/bono-2025.xlsx
+          sheets:
+            - name: BONOS
+              key: bonus
+              header_row: 2
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: copec_poa_compliance_merge
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.copec.poa_compliance.poa_compliance_strategy
+      class: CopecPoaComplianceStrategy
+      params:
+        rep_id_filter: null
+        metric_type: margen
+
+    output:
+      tab_name: PLAN_856
+      clear_before_write: true
+
+  PLAN_918:
+    active: true
+    name: Resumen Subgerente
+    description: Resumen consolidado de comisiones por ejecutivo
+    depends_on:
+      - PLAN_786
+      - PLAN_800
+      - PLAN_806
+      - PLAN_835
+      - PLAN_836
+      - PLAN_837
+      - PLAN_838
+      - PLAN_839
+      - PLAN_842
+      - PLAN_856
+      - PLAN_920
+
+    data_sources:
+      - id: ejecutivos
+        type: csv
+        config:
+          path: data/copec/info-ejecutivos.csv
+          separator: ','
+          encoding: utf-8
+
+      - id: plan_800
+        type: gsheet
+        config:
+          sheet_id: 1J9ZYR18VGGI0Q9oXYFanc-giH-cNv7uFuW47n3D44Y4
+          tab_name: PLAN_800
+          key: plan_800
+
+      - id: plan_806
+        type: gsheet
+        config:
+          sheet_id: 1J9ZYR18VGGI0Q9oXYFanc-giH-cNv7uFuW47n3D44Y4
+          tab_name: PLAN_806
+          key: plan_806
+
+      - id: plan_835
+        type: gsheet
+        config:
+          sheet_id: 1J9ZYR18VGGI0Q9oXYFanc-giH-cNv7uFuW47n3D44Y4
+          tab_name: PLAN_835
+          key: plan_835
+
+      - id: plan_836
+        type: gsheet
+        config:
+          sheet_id: 1J9ZYR18VGGI0Q9oXYFanc-giH-cNv7uFuW47n3D44Y4
+          tab_name: PLAN_836
+          key: plan_836
+
+      - id: plan_837
+        type: gsheet
+        config:
+          sheet_id: 1J9ZYR18VGGI0Q9oXYFanc-giH-cNv7uFuW47n3D44Y4
+          tab_name: PLAN_837
+          key: plan_837
+
+      - id: plan_838
+        type: gsheet
+        config:
+          sheet_id: 1J9ZYR18VGGI0Q9oXYFanc-giH-cNv7uFuW47n3D44Y4
+          tab_name: PLAN_838
+          key: plan_838
+
+      - id: plan_839
+        type: gsheet
+        config:
+          sheet_id: 1J9ZYR18VGGI0Q9oXYFanc-giH-cNv7uFuW47n3D44Y4
+          tab_name: PLAN_839
+          key: plan_839
+
+      - id: plan_842
+        type: gsheet
+        config:
+          sheet_id: 1J9ZYR18VGGI0Q9oXYFanc-giH-cNv7uFuW47n3D44Y4
+          tab_name: PLAN_842
+          key: plan_842
+
+      - id: plan_786
+        type: gsheet
+        config:
+          sheet_id: 1J9ZYR18VGGI0Q9oXYFanc-giH-cNv7uFuW47n3D44Y4
+          tab_name: PLAN_786
+          key: plan_786
+
+      - id: plan_856
+        type: gsheet
+        config:
+          sheet_id: 1J9ZYR18VGGI0Q9oXYFanc-giH-cNv7uFuW47n3D44Y4
+          tab_name: PLAN_856
+          key: plan_856
+
+      - id: plan_920
+        type: gsheet
+        config:
+          sheet_id: 1J9ZYR18VGGI0Q9oXYFanc-giH-cNv7uFuW47n3D44Y4
+          tab_name: PLAN_920
+          key: plan_920
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: copec_summary_merge
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.copec.summary.summary_strategy
+      class: CopecSummaryStrategy
+      params:
+        rep_id_filter: null
+
+    output:
+      tab_name: PLAN_918
+      clear_before_write: true
+
+  PLAN_920:
+    active: true
+    name: Bono Trimestral por Equipo
+    description: Bono de $6M para equipos que cumplan POA durante 3 meses consecutivos
+
+    data_sources:
+      - id: ejecutivos
+        type: csv
+        config:
+          path: data/copec/info-ejecutivos.csv
+          separator: ','
+          encoding: utf-8
+
+      - id: tct_tae
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: copec/Proy-ComAtendedores/venta_mensual_tct_tae/
+          pattern: "*_venta_mensual_tct_tae*.csv"
+          separator: '|'
+          encoding: utf-8
+          max_files: 15
+          sort_order: desc
+          current_key: tct_tae_actual
+          historical_key_prefix: tct_tae_
+
+      - id: cupon_electronico
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: copec/Proy-ComAtendedores/venta_mensual_cupon_electronico/
+          pattern: "*_venta_mensual.csv"
+          separator: '|'
+          encoding: utf-8
+          max_files: 15
+          sort_order: desc
+          current_key: cupon_electronico_actual
+          historical_key_prefix: cupon_electronico_
+
+      - id: app_copec
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: copec/Proy-ComAtendedores/venta_mensual_app_copec/
+          pattern: "*_venta_mensual_app_copec*.csv"
+          separator: '|'
+          encoding: utf-8
+          max_files: 15
+          sort_order: desc
+          current_key: app_copec_actual
+          historical_key_prefix: app_copec_
+
+      - id: bluemax
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: copec/Proy-ComAtendedores/venta_mensual_bluemax_tarjetas/
+          pattern: "*_venta_mensual*.csv"
+          separator: '|'
+          encoding: utf-8
+          max_files: 15
+          sort_order: desc
+          current_key: bluemax_actual
+          historical_key_prefix: bluemax_
+
+      - id: tct_premium
+        type: s3
+        config:
+          bucket: foccuz-sftp-production
+          prefix: copec/Proy-ComAtendedores/venta_mensual_tct_premium/
+          pattern: "*_venta_mensual*.csv"
+          separator: '|'
+          encoding: utf-8
+          max_files: 15
+          sort_order: desc
+          current_key: tct_premium_actual
+          historical_key_prefix: tct_premium_
+
+      - id: lubricantes
+        type: excel
+        config:
+          path: data/copec/comisiones-lub.xlsx
+          sheets:
+            - name: Detalle Comisión Mes
+              key: lubricantes
+              header_row: 0
+
+      - id: poa
+        type: excel
+        config:
+          path: data/copec/POA.xlsx
+          sheets:
+            - name: Resumen
+              key: poa_resumen
+              header_row: 0
+
+    data_merge_strategy:
+      type: custom
+      config:
+        strategy_name: copec_quarterly_team_merge
+
+    script:
+      module: src.context.commissions.infrastructure.processing_strategies.custom.copec.quarterly_team.quarterly_team_bonus_strategy
+      class: CopecQuarterlyTeamBonusStrategy
+      params:
+        rep_id_filter: null
+
+    output:
+      tab_name: PLAN_920
+      clear_before_write: true
